@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
+@RequestMapping("/clients") // Centralizo los endpoints con el nombre "clients"
 public class ClientRestController {
 
     /* Creamos una lista de prueba que emplea el rol de persistencia
@@ -20,25 +21,25 @@ public class ClientRestController {
         )
     );
 
-    @GetMapping("/clients")
+    @GetMapping
     public List<Client> getClients() {
         return clients;
     }
 
-    @GetMapping("/clients/{userName}")
+    @GetMapping("/{userName}")
     public Client getClient(@PathVariable String userName) {
         return clients.stream().
                 filter(client -> client.getUsername().equalsIgnoreCase(userName)).
                 findFirst().orElseThrow();
     }
 
-    @PostMapping("/clients")
+    @PostMapping
     public Client addClient(@RequestBody Client client) {
         clients.add(client);
         return client;
     }
 
-    @PutMapping("/clients")
+    @PutMapping
     public Client updateClient(@RequestBody Client client) {
 
         Client foundClient = clients.stream().
@@ -51,7 +52,7 @@ public class ClientRestController {
         return foundClient;
     }
 
-    @DeleteMapping("/clients/{userName}")
+    @DeleteMapping("/{userName}")
     public void deleteClient(@PathVariable String userName) {
         Client foundClient = clients.stream().
                 filter(cli-> cli.getUsername().equalsIgnoreCase(userName)).
