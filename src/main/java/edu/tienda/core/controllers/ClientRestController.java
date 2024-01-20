@@ -1,9 +1,7 @@
 package edu.tienda.core.controllers;
 
 import edu.tienda.core.domain.Client;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +30,33 @@ public class ClientRestController {
         return clients.stream().
                 filter(client -> client.getUsername().equalsIgnoreCase(userName)).
                 findFirst().orElseThrow();
+    }
+
+    @PostMapping("/clients")
+    public Client addClient(@RequestBody Client client) {
+        clients.add(client);
+        return client;
+    }
+
+    @PutMapping("/clients")
+    public Client updateClient(@RequestBody Client client) {
+
+        Client foundClient = clients.stream().
+                filter(cli -> cli.getUsername().equalsIgnoreCase(client.getUsername())).
+                findFirst().orElseThrow();
+
+        foundClient.setPassword(client.getPassword());
+        foundClient.setName(client.getName());
+
+        return foundClient;
+    }
+
+    @DeleteMapping("/clients/{userName}")
+    public void deleteClient(@PathVariable String userName) {
+        Client foundClient = clients.stream().
+                filter(cli-> cli.getUsername().equalsIgnoreCase(userName)).
+                findFirst().orElseThrow();
+        clients.remove(foundClient);
     }
 
 }
