@@ -1,6 +1,7 @@
 package edu.tienda.core.controllers;
 
 import edu.tienda.core.domain.Client;
+import edu.tienda.core.exceptions.BadRequestException;
 import edu.tienda.core.exceptions.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,11 @@ public class ClientRestController {
 
     @GetMapping("/{userName}")
     public ResponseEntity<?> getClient(@PathVariable String userName) {
+
+        if (userName.length() != 3) { // Validando parámetro userName
+            throw new BadRequestException("El parámetro nombre de usuario debe tener 3 caracteres");
+        }
+
         return clients.stream().
                 filter(client -> client.getUsername().equalsIgnoreCase(userName)) // Filtramos por userName
                 .findFirst() // Retornará un opcional de Client
