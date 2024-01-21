@@ -1,6 +1,7 @@
 package edu.tienda.core.controllers;
 
 import edu.tienda.core.domain.Client;
+import edu.tienda.core.exceptions.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -31,9 +32,14 @@ public class ClientRestController {
 
     @GetMapping("/{userName}")
     public ResponseEntity<?> getClient(@PathVariable String userName) {
-        return ResponseEntity.ok(clients.stream().
-                filter(client -> client.getUsername().equalsIgnoreCase(userName)).
-                findFirst().orElseThrow());
+        return clients.stream().
+                filter(client -> client.getUsername().equalsIgnoreCase(userName)) // Filtramos por userName
+                .findFirst() // Retornará un opcional de Client
+                .map(ResponseEntity::ok) // transformara el “Optional<Cliente>” en un “Optional<ResponseEntity<Cliente>>”
+                                        // y lo retornará.
+                .orElseThrow(()-> new ResourceNotFoundException("Cliente " + userName + " no encontrado"));
+                /*  En el caso de que el opcional de cliente no contenga un objeto, se ejecutará la última línea que provocará la
+                excepción. Luego será Spring el encargado de transformar la respuesta del servicio como NOT FOUND.*/
     }
 
     @PostMapping
