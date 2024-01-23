@@ -3,15 +3,17 @@ package edu.tienda.core.services;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.tienda.core.domain.Product;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
-@Primary /* Distingue a un bean de otro indicando que el que está marcado
-        con esta anotación debe tener prioridad para la inyección por sobre otros
-        servicios “hermanos”. Es decir, servicios que implementan una misma interfaz. */
-@Service
+@Service("JSON")
+@ConditionalOnProperty(
+        value = "products.strategy",
+        havingValue = "IN_JSON"
+)
 public class ProductsServiceJSONImpl implements IProductService {
 
     @Override
