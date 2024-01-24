@@ -5,6 +5,7 @@ import edu.tienda.core.services.IProductService;
 import edu.tienda.core.services.ProductsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ public class ProductRestController {
     una instancia de “ProductsServiceImpl” y la guardará en la referencia “IProductService”
     de manera transparente tanto al programador como a la clase controladora.*/
     //@Qualifier("MEMORY") Quitamos esta anotación para que no se interponga con @ConditionalOnProperty
+    @Lazy
     private IProductService productsService;
 
     @GetMapping

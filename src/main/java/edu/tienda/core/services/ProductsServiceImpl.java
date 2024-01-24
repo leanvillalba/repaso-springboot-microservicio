@@ -2,11 +2,13 @@ package edu.tienda.core.services;
 
 import edu.tienda.core.domain.Product;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+@Lazy
 @Service("MEMORY") // "(MEMORY") Gracias a esta nominación, desde el controlador podremos
                     // indicar de forma explícita cuál delos dos beans se debe inyectar.
 /*
@@ -33,7 +35,11 @@ public class ProductsServiceImpl implements IProductService {
             new Product(3, "Tablet", 8000.0, 5)
     ));
 
+    public ProductsServiceImpl() {
+        System.out.println("Se está construyendo un objeto de la clase ProductsServiceImpl");
+    }
     public List<Product> getProducts() {
         return products;
     }
+
 }
