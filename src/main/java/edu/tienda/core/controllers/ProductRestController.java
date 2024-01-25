@@ -1,5 +1,6 @@
 package edu.tienda.core.controllers;
 
+import edu.tienda.core.configurations.ConfigurationParameters;
 import edu.tienda.core.domain.Product;
 import edu.tienda.core.services.IProductService;
 import edu.tienda.core.services.ProductsServiceImpl;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -29,10 +32,29 @@ public class ProductRestController {
     @GetMapping
     public ResponseEntity<?> getProducts() {
 
+        System.out.println("Params: " + configurationParameters.toString());
+
         // Se recuperan todos los productos del servicio.
         List<Product> products = productsService.getProducts();
 
         // Retornamos los productos del servicio en el boy de la respuesta.
+        return ResponseEntity.ok(products);
+    }
+
+    @Autowired
+    private ConfigurationParameters configurationParameters;
+
+    @GetMapping("/fake-products")
+    public ResponseEntity<?> fakeProductsAPI(){
+
+        List<Product> products = new ArrayList<>(Arrays.asList(
+                new Product(1, "Camiseta Manchester City", 1200.0, 4),
+                new Product(2, "Camiseta Boca Jrs", 1000.0, 5),
+                new Product(3, "Camiseta River Plate", 900.0, 6)
+                )
+        );
+
+        // Retornamos los productos del servicio en el body de la respuesta.
         return ResponseEntity.ok(products);
     }
 }
