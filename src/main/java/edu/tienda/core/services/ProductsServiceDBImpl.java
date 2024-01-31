@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service("DB")
 @ConditionalOnProperty(
@@ -27,17 +28,15 @@ public class ProductsServiceDBImpl implements IProductService {
 
     @Override
     public List<Product> getProducts() {
-        List<ProductEntity> productEntities = productsRepository.findAll();
-        List<Product> products = new ArrayList<>();
-
-        for (ProductEntity productEntity : productEntities) {
-            Product product = new Product();
-            product.setId(productEntity.getId());
-            product.setName(productEntity.getName());
-            product.setPrice(productEntity.getPrice());
-            product.setStock(productEntity.getStock());
-            products.add(product);
-        }
+        List<Product> products = productsRepository.findAll().
+                stream().map(productEntity -> {
+                    Product product = new Product();
+                    product.setId(productEntity.getId());
+                    product.setName(productEntity.getName());
+                    product.setPrice(productEntity.getPrice());
+                    product.setStock(productEntity.getStock());
+                    return product;
+                }).collect(Collectors.toList());
 
         return products;
     }
