@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service("DB")
@@ -27,7 +28,17 @@ public class ProductsServiceDBImpl implements IProductService {
     @Override
     public List<Product> getProducts() {
         List<ProductEntity> productEntities = productsRepository.findAll();
+        List<Product> products = new ArrayList<>();
 
-        return null;
+        for (ProductEntity productEntity : productEntities) {
+            Product product = new Product();
+            product.setId(productEntity.getId());
+            product.setName(productEntity.getName());
+            product.setPrice(productEntity.getPrice());
+            product.setStock(productEntity.getStock());
+            products.add(product);
+        }
+
+        return products;
     }
 }
