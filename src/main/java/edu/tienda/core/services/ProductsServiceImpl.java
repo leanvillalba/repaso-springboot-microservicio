@@ -42,4 +42,20 @@ public class ProductsServiceImpl implements IProductService {
         return products;
     }
 
+    @Override
+    public void saveProduct(Product product) {
+
+    }
+
+    @Override
+    public Product updateProduct(Product product) {
+        return product;
+
+    }
+
+    @Override
+    public void deleteProduct(Integer id) {
+
+    }
+
 }

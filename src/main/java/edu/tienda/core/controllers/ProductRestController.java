@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +37,7 @@ public class ProductRestController {
         // Se recuperan todos los productos del servicio.
         List<Product> products = productsService.getProducts();
 
-        // Retornamos los productos del servicio en el boy de la respuesta.
+        // Retornamos los productos del servicio en el body de la respuesta.
         return ResponseEntity.ok(products);
     }
 
@@ -57,4 +57,32 @@ public class ProductRestController {
         // Retornamos los productos del servicio en el body de la respuesta.
         return ResponseEntity.ok(products);
     }
+
+    @PostMapping
+    public ResponseEntity<?> addProduct(@RequestBody Product product) {
+        productsService.saveProduct(product);
+
+        // Obteniendo URL de servicio
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(product.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(product);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable Integer id, @RequestBody Product product) {
+        product.setId(id);
+        Product updateProduct = productsService.updateProduct(product);
+        return ResponseEntity.ok(updateProduct);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable Integer id) {
+        productsService.deleteProduct(id);
+    }
+
+
 }

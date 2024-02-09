@@ -35,4 +35,19 @@ public class ProductsServiceJSONImpl implements IProductService {
             throw new RuntimeException();
         }
     }
+
+    @Override
+    public void saveProduct(Product product) {
+
+    }
+
+    @Override
+    public Product updateProduct(Product product) {
+        return product;
+    }
+
+    @Override
+    public void deleteProduct(Integer id) {
+
+    }
 }
