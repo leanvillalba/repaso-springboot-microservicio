@@ -57,6 +57,14 @@ public class ProductRestController {
         return ResponseEntity.ok(products);
     }
 
+    @GetMapping("/name-{name}-price-{price}-stock-{stock}")
+    public ResponseEntity<?> getProductsByNameAndPriceAndStock(@PathVariable String name,
+                                                               @PathVariable Double price,
+                                                               @PathVariable Integer stock) {
+        List<Product> products = productsService.getProductsByNameAndPriceAndStock(name, price, stock);
+        return ResponseEntity.ok(products);
+    }
+
     @Autowired
     private ConfigurationParameters configurationParameters;
 

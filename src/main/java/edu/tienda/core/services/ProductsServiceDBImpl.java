@@ -88,6 +88,21 @@ public class ProductsServiceDBImpl implements IProductService {
     }
 
     @Override
+    public List<Product> getProductsByNameAndPriceAndStock(String name, Double price, Integer stock) {
+        List<Product> products = productsRepository.findByNameAndPriceAndstock(name, price, stock).
+                stream().map(productEntity -> {
+                    Product product = new Product();
+                    product.setId(productEntity.getId());
+                    product.setName(productEntity.getName());
+                    product.setPrice(productEntity.getPrice());
+                    product.setStock(productEntity.getStock());
+                    return product;
+                }).collect(Collectors.toList());
+
+        return products;
+    }
+
+    @Override
     public void saveProduct(Product product) {
         // Mapeo de Product a ProductEntity
         ProductEntity productEntity = new ProductEntity();
