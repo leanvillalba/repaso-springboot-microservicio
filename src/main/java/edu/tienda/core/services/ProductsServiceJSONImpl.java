@@ -37,6 +37,21 @@ public class ProductsServiceJSONImpl implements IProductService {
     }
 
     @Override
+    public List<Product> getProductsByPriceLessThan(Double price) {
+        return null;
+    }
+
+    @Override
+    public List<Product> getProductsByNameLike(String name) {
+        return null;
+    }
+
+    @Override
+    public List<Product> getProductsByPriceGreaterThanAndStockLessThan(Double price, Integer stock) {
+        return null;
+    }
+
+    @Override
     public void saveProduct(Product product) {
 
     }

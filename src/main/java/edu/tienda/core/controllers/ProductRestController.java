@@ -3,9 +3,7 @@ package edu.tienda.core.controllers;
 import edu.tienda.core.configurations.ConfigurationParameters;
 import edu.tienda.core.domain.Product;
 import edu.tienda.core.services.IProductService;
-import edu.tienda.core.services.ProductsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,12 +30,30 @@ public class ProductRestController {
     @GetMapping
     public ResponseEntity<?> getProducts() {
 
-        System.out.println("Params: " + configurationParameters.toString());
+        //System.out.println("Params: " + configurationParameters.toString());
 
         // Se recuperan todos los productos del servicio.
         List<Product> products = productsService.getProducts();
 
         // Retornamos los productos del servicio en el body de la respuesta.
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/lessthan/{price}")
+    public ResponseEntity<?> getProductsLessThan(@PathVariable Double price) {
+        List<Product> products = productsService.getProductsByPriceLessThan(price);
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/namelike/{name}")
+    public ResponseEntity<?> getNameLike(@PathVariable String name) {
+        List<Product> products = productsService.getProductsByNameLike(name);
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/pricegreaterthan-{price}-stocklessthan-{stock}")
+    public ResponseEntity<?> getPriceGreaterThanAndStockLessThan(@PathVariable Double price, @PathVariable Integer stock) {
+        List<Product> products = productsService.getProductsByPriceGreaterThanAndStockLessThan(price, stock);
         return ResponseEntity.ok(products);
     }
 

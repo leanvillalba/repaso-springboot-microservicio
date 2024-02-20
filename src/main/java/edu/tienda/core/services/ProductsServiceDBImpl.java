@@ -42,6 +42,52 @@ public class ProductsServiceDBImpl implements IProductService {
     }
 
     @Override
+    public List<Product> getProductsByPriceLessThan(Double price) {
+        List<Product> products = productsRepository.findByPriceLessThan(price).
+                stream().map(productEntity -> {
+                    Product product = new Product();
+                    product.setId(productEntity.getId());
+                    product.setName(productEntity.getName());
+                    product.setPrice(productEntity.getPrice());
+                    product.setStock(productEntity.getStock());
+                    return product;
+                }).collect(Collectors.toList());
+
+        return products;
+    }
+
+    @Override
+    public List<Product> getProductsByNameLike(String name) {
+        List<Product> products = productsRepository.findByNameLike(name).
+                stream().map(productEntity -> {
+                    Product product = new Product();
+                    product.setId(productEntity.getId());
+                    product.setName(productEntity.getName());
+                    product.setPrice(productEntity.getPrice());
+                    product.setStock(productEntity.getStock());
+                    return product;
+                }).collect(Collectors.toList());
+
+        return products;
+
+    }
+
+    @Override
+    public List<Product> getProductsByPriceGreaterThanAndStockLessThan(Double price, Integer stock) {
+        List<Product> products = productsRepository.findByPriceGreaterThanAndStockLessThan(price, stock).
+                stream().map(productEntity -> {
+                    Product product = new Product();
+                    product.setId(productEntity.getId());
+                    product.setName(productEntity.getName());
+                    product.setPrice(productEntity.getPrice());
+                    product.setStock(productEntity.getStock());
+                    return product;
+                }).collect(Collectors.toList());
+
+        return products;
+    }
+
+    @Override
     public void saveProduct(Product product) {
         // Mapeo de Product a ProductEntity
         ProductEntity productEntity = new ProductEntity();
